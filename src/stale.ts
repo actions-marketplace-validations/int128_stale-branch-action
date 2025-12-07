@@ -1,26 +1,51 @@
-import assert from 'assert'
-import { ListRefsQuery } from './generated/graphql'
+import assert from 'node:assert'
+import { Minimatch } from 'minimatch'
+import type { ListRefsQuery } from './generated/graphql.js'
 
-export const getStaleRefs = (refs: ListRefsQuery, prefix: string, expiration: Date): string[] => {
+type Filter = {
+  expiration: Date
+  excludeRefs: string[]
+}
+
+type Ref = {
+  name: string
+  committedDate: Date
+}
+
+export const getStaleRefs = (refs: ListRefsQuery, prefix: string, filter: Filter): Ref[] => {
   assert(refs.repository != null)
   assert(refs.repository.refs != null)
   assert(refs.repository.refs.nodes != null)
 
-  const staleRefNames = []
+  const excludeRefPatterns = filter.excludeRefs.map((excludeRef) => new Minimatch(excludeRef))
+
+  const staleRefs = []
   for (const node of refs.repository.refs.nodes) {
     assert(node != null)
-    if (node.associatedPullRequests.totalCount > 0) {
-      continue // branch is associated to a pull request
-    }
-
     assert(node.target != null)
-    assert(node.target.__typename === 'Commit')
-    const committedDate = new Date(node.target.committedDate)
-    if (committedDate.getTime() > expiration.getTime()) {
-      continue // branch is not outdated
+    assert.strictEqual(node.target.__typename, 'Commit')
+    const refName = `${prefix}${node.name}`
+
+    // Exclude given patterns
+    if (excludeRefPatterns.some((pattern) => pattern.match(refName))) {
+      continue
     }
 
-    staleRefNames.push(`${prefix}${node.name}`)
+    // Exclude a branch associated to any pull request
+    if (node.associatedPullRequests.totalCount > 0) {
+      continue
+    }
+
+    // Exclude a branch committed recently
+    const committedDate = new Date(node.target.committedDate)
+    if (committedDate.getTime() > filter.expiration.getTime()) {
+      continue
+    }
+
+    staleRefs.push({
+      name: refName,
+      committedDate,
+    })
   }
-  return staleRefNames
+  return staleRefs
 }

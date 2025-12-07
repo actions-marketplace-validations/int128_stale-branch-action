@@ -1,9 +1,7 @@
+import assert from 'node:assert'
 import * as core from '@actions/core'
-import { GitHub } from '@actions/github/lib/utils'
-import { ListRefsQuery, ListRefsQueryVariables } from '../generated/graphql'
-import assert from 'assert'
-
-type Octokit = InstanceType<typeof GitHub>
+import type { Octokit } from '@octokit/action'
+import type { ListRefsQuery, ListRefsQueryVariables } from '../generated/graphql.js'
 
 const query = /* GraphQL */ `
   query listRefs($owner: String!, $name: String!, $refPrefix: String!, $afterCursor: String) {
