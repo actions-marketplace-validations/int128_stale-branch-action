@@ -8,29 +8,28 @@
   },
   "type": "module",
   "dependencies": {
-    "@actions/core": "3.0.0",
+    "@actions/core": "3.0.1",
     "@actions/exec": "3.0.0",
     "@octokit/action": "8.0.4",
-    "@octokit/plugin-retry": "8.1.0",
-    "graphql": "16.13.1",
-    "minimatch": "10.2.4"
+    "@octokit/plugin-retry": "8.1.1",
+    "graphql": "16.14.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.7",
-    "@graphql-codegen/cli": "6.2.1",
-    "@graphql-codegen/import-types-preset": "3.0.1",
-    "@graphql-codegen/typescript": "5.0.9",
-    "@graphql-codegen/typescript-operations": "5.0.9",
+    "@biomejs/biome": "2.5.8",
+    "@graphql-codegen/cli": "6.3.1",
+    "@graphql-codegen/import-types-preset": "4.0.1",
+    "@graphql-codegen/typescript": "5.0.10",
+    "@graphql-codegen/typescript-operations": "5.1.0",
     "@octokit/graphql-schema": "15.26.1",
-    "@tsconfig/node20": "20.1.9",
-    "@types/node": "20.19.37",
-    "@vercel/ncc": "0.38.4",
-    "pnpm": "10.32.1",
-    "typescript": "5.9.3",
-    "vitest": "4.1.0"
+    "@tsconfig/node24": "24.0.4",
+    "@types/node": "24.13.3",
+    "@vercel/ncc": "0.45.0",
+    "pnpm": "11.20.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.10"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
-  "packageManager": "pnpm@10.32.1"
+  "packageManager": "pnpm@11.20.0"
 }
